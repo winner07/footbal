@@ -1,0 +1,7 @@
+1. Скопіювати файли сайту на сервер.
+2. Створити базу даних "football", якщо бажаєте інше ім'я, то змініть константу "DB_NAME" в файлі "back-end/config/db_config.php".
+3. Імпортувати дані бази даних.
+4. Встановити кодування бази даних в файлі конфігурації MySQL "my.ini" на:
+	default-character-set = cp1251
+	character-set-server = cp1251
+	init-connect = "set names cp1251"
