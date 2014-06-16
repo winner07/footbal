@@ -44,12 +44,21 @@
 			$posts_count = $this->db->query("SELECT COUNT(*) FROM `posts`". (isset($this->list_categories) ? "WHERE `post_cat_id` IN({$this->list_categories})" : NULL))->fetchColumn(0);
 			
 			if($posts_count){
-				$posts_query = $this->db->query("SELECT `post_id`, `post_title`, `post_short_desc`, `post_cat_id`, `post_date`, `post_author_id`, `cat_name` FROM `posts`, `categories` WHERE `post_status` = 'post' AND `post_cat_id` = `cat_id`". (isset($this->list_categories) ? " AND `post_cat_id` IN({$this->list_categories})" : NULL) ." ORDER BY `post_date` DESC LIMIT $start_offset, $news_on_page");
+				$posts_query = $this->db->query("SELECT `post_id`, `post_title`, `post_short_desc`, `post_cat_id`, `post_date`, `u_login`, `cat_name` FROM `posts`, `categories`, `user` WHERE `post_status` = 'post' AND `post_cat_id` = `cat_id`". (isset($this->list_categories) ? " AND `post_cat_id` IN({$this->list_categories})" : NULL) ." AND `post_author_id` = `u_id` ORDER BY `post_date` DESC LIMIT $start_offset, $news_on_page");
 				
 				if($posts_query){
 					while($post = $posts_query->fetch(PDO::FETCH_ASSOC)){
 						$date = explode(" ", $post["post_date"]);
 						
+						//Обрезка текста до 150 символов
+						preg_match("/<p><img.+\/>(.+)<\/p>/", $post["post_short_desc"], $short_text);
+						
+						if(strlen(htmlspecialchars_decode($short_text[1])) > 150){
+							$chars_150 = substr(htmlspecialchars_decode($short_text[1]), 0, 150) ."...";
+							$post["post_short_desc"] = preg_replace("/(<p><img.+\/>).+(<\/p>)/", "$1{$chars_150}$2", $post["post_short_desc"]);
+						}
+						
+						//Вывод новостей
 						echo <<<POSTS
 							<article class="post">
 								<header>
@@ -59,9 +68,11 @@
 								</header>
 								<div class="content">
 									{$post["post_short_desc"]}
+									<a href="post.php?category={$post["post_cat_id"]}&id={$post["post_id"]}">READ MORE</a>
 								</div>
 								<footer>
 									<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
+									<span class="author">{$post["u_login"]}</span>
 								</footer>
 							</article>
 POSTS;
@@ -79,7 +90,7 @@ POSTS;
 			$is_post = $this->db->query("SELECT COUNT(*) FROM `posts` WHERE `post_id` = $post_id")->fetchColumn(0);
 			//Якщо новина існує, вивести її
 			if($is_post){
-				$post = $this->db->query("SELECT `post_id`, `post_title`, `post_short_desc`, `post_full_desc`, `post_cat_id`, `post_date`, `post_author_id` FROM `posts` WHERE `post_status` = 'post' AND `post_id` = $post_id LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+				$post = $this->db->query("SELECT `post_id`, `post_title`, `post_short_desc`, `post_full_desc`, `post_cat_id`, `post_date`, `post_author_id`, `u_login` FROM `posts`, `user` WHERE `post_status` = 'post' AND `post_id` = $post_id AND `post_author_id` = `u_id` LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 				
 				if(!$post){
 					throw new Exception("Помилка виведення новини, спробуйте пізніше");
@@ -97,6 +108,7 @@ POSTS;
 							</div>
 							<footer>
 								<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
+								<span class="author">{$post["u_login"]}</span>
 							</footer>
 						</article>
 POSTS;

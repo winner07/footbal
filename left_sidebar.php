@@ -9,9 +9,10 @@
 			
 			echo "<ul>
 					<li><img src=\"$avatar\" alt=\"аватар\"></li>
-					<li><strong>{$_SESSION["user_login"]}</strong></li>".
-					($is_admin == "admin" ? "<li><a href=\"admin\\\" target=\"_blank\">Адмін-панель</a></li>" : NULL)
-					."<li><a href=\"logout.php\">Вихід</a></li>
+					<li><strong>{$_SESSION["user_login"]}</strong></li>"
+					.($is_admin == "admin" ? "<li><a href=\"admin\\\" target=\"_blank\">Адмін-панель</a></li>" : NULL).
+					"<li><a href=\"profile.php?id={$_SESSION["user_id"]}\">Профіль</a></li>
+					<li><a href=\"logout.php\">Вихід</a></li>
 				  <ul>";
 		} else {
 		?>

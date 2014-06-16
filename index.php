@@ -22,7 +22,7 @@ include_once "back-end/config/init.php";
             <div id="content">
             	<?php
 				$page_nav = new Page_navigator();
-				$page_nav->print_news($_GET["category"], $_GET["page"], 5);
+				$page_nav->print_news($_GET["category"], $_GET["page"], 10);
 				$page_nav->print_nav(5);
 				?>
             </div>

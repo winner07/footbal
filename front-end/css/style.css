@@ -212,6 +212,11 @@ header {
 	font-size:.85em;
 }
 
+.post footer .author {
+	float:right;
+	font-size:.85em;
+}
+
 /*------ Коментарі ------*/
 .comment {
 	padding:10px;
