@@ -1,0 +1,406 @@
+@import url("reset.css");
+
+body {
+	background:url(../img/background.jpg) 0 0 / 100% 100% no-repeat fixed;
+	-moz-background:url(../img/background.jpg) 0 0 / 100% 100% no-repeat fixed;
+	-webkit-background:url(../img/background.jpg) 0 0 / 100% 100% no-repeat fixed;
+	-o-background:url(../img/background.jpg) 0 0 / 100% 100% no-repeat fixed;
+	color:#000;
+	font:0.8em Tahoma, Geneva, sans-serif;
+}
+
+p {
+	margin:0 0 15px 0;
+}
+
+a:link, a:visited {
+	color:#43853B;
+}
+
+a:hover {
+	text-decoration:none;
+}
+
+#wrap {
+	width:1000px;
+	margin:50px auto 0 auto;	
+}
+
+h1 {
+	font-size:1.5em;
+	font-weight:600;
+	margin-bottom:5px;
+	color:#43853B;
+}
+
+h2 {
+	font-size:1.2em;
+	margin-bottom:5px;
+	color:#43853B;
+}
+
+h3 {
+	font-size:1.1em;
+	margin-bottom:5px;
+	color:#43853B;
+}
+
+strong {
+	font-weight:bold;
+}
+
+table {
+	width:100%;
+}
+
+table td {
+	padding:3px 5px;
+	vertical-align:top;
+}
+
+table tr:nth-child(2n+1) {
+	background-color:#F2F2F2;
+}
+
+input[type=submit], input[type=button] {
+	background:#56B945;
+	border:1px solid #449337;
+	color:#FFF;
+	padding:3px 10px;
+	cursor:pointer;
+}
+
+/*------------------------ шапка ------------------------*/
+header {
+	overflow:hidden;
+}
+
+header .logo {
+	display:block;
+	width:294px;
+	height:50px;
+	background:url(../img/logo.png) no-repeat;
+	float:left;
+}
+
+header .lang {
+	float:right;
+}
+
+header .lang a {
+	display:inline-block;
+	width:32px; height:24px;
+}
+
+header .lang .en {
+	background:url("../img/en.gif");
+}
+
+header .lang .ua {
+	background:url("../img/ua.gif");
+}
+
+/*------ головна навігація ------*/
+.main_links {
+	float:left;
+	overflow:hidden;
+}
+
+.main_links li {
+	float:left;
+}
+
+.main_links a {
+	color:#FFF;
+	border-right:1px solid #529032;
+	padding-right:5px;
+	margin-right:5px;
+}
+
+.main_links li:last-child a {
+	border:none;
+	padding:none;
+	margin:none;
+}
+
+/*------------------------ внутрішня обгортка ------------------------*/
+#inner_wrap {
+	overflow:hidden;
+	background:#FFF;
+}
+
+/*------ контент ------*/
+#content {
+	width:570px;
+	padding:5px 0;
+	float:left;
+}
+
+.reg_table tr td:nth-child(1) {
+	width:150px;
+}
+
+.reg_table tr td:nth-child(2) {
+	width:150px;
+}
+
+.reg_table tr td:nth-child(3) {
+	color:#F00;
+}
+
+.reg_table input[type=text],
+.reg_table input[type=email],
+.reg_table input[type=password] {
+	height:20px;
+	width:150px;
+	border:1px solid #333;
+	border-radius:6px;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+
+.reg_table input[type=file] {
+	height:20px;
+	width:150px;
+}
+
+.reg_table input:focus, .reg_table select option {
+	background-color:#E9FFE8;
+}
+
+.reg_table select {
+	width:200px;
+	height:25px;
+	border:1px solid #333;
+}
+
+.reg_table input[type=radio] {
+	margin:3px;
+}
+
+.reg_table input[type=submit] {
+	display:block;
+}
+
+/*------ новини ------*/
+.post {
+	overflow:hidden;
+	margin-bottom:20px;
+	border:1px solid #9AD590;
+}
+
+.post header {
+	display:block;
+	padding:7px;
+	background:#EEF8EC;
+	border-bottom:1px solid #9AD590;
+}
+
+.post header h2 {
+	margin:0;
+	display:inline
+}
+
+.post header h2 a:hover {
+	color:red;
+}
+
+.post header .arrow {
+	margin:0 5px;
+}
+
+.post .content {
+	padding:10px;
+	overflow:hidden;
+}
+
+.post .content img {
+	margin:0 10px 0 0;
+}
+
+.post footer {
+	display:block;
+	padding:7px;
+	background:#EEF8EC;
+	border-top:1px solid #9AD590;
+}
+
+.post footer time {
+	font-size:.85em;
+}
+
+.post footer .author {
+	float:right;
+	font-size:.85em;
+}
+
+/*------ Коментарі ------*/
+.comment {
+	padding:10px;
+	margin:0 0 10px 0;
+	width:548px;
+	border:1px solid #9AD590;
+}
+
+.comment header {
+	overflow:hidden;
+}
+
+.comment header img {
+	float:left;
+	margin:0 10px 0 0;
+}
+
+.comment header .author {
+	display:block;
+	color:#43853B;
+}
+
+.comment p {
+	margin:0 0 10px 0;
+}
+
+/*------ форма відправки коментарів ------*/
+.comment_form textarea {
+	width:568px;
+	height:150px;
+	border:1px solid #9AD590;
+}
+
+/*------ поммилки ------*/
+.warning {
+	background:#FFF7CE;
+	border:1px solid #D9C65B;
+	border-radius:3px;
+	margin:20px 0;
+	padding:5px 10px;
+}
+
+.warning a {
+	color:#756B30;
+	font-weight:bold;
+}
+
+.ok {
+	background:#F6FFEC;
+	border:1px solid #89B755;
+	border-radius:3px;
+	margin:20px 0;
+	padding:5px 10px;
+}
+
+.ok a {
+	color:#006312;
+	font-weight:bold;
+}
+
+.error {
+	background:#FDE4E1;
+	border:1px solid #B16A6C;
+	border-radius:3px;
+	margin:20px 0;
+	padding:5px 10px;
+}
+
+.error a {
+	color:#822121;
+	font-weight:bold;
+}
+
+/*------ лівий сайдбар ------*/
+.left_sb {
+	width:170px;
+	padding:5px 10px;
+	float:left;
+}
+
+.left_sb .widget {
+	margin-bottom:10px;
+	padding:5px;
+	border:1px solid #9AD590;
+}
+
+/*------ правый сайдбар ------*/
+.right_sb {
+	width:220px;
+	padding:5px 10px;
+	float:right;
+}
+
+.right_sb .widget {
+	margin-bottom:10px;
+	padding:5px;
+	border:1px solid #9AD590;
+}
+
+/*------ авторизація ------*/
+.authorization label {
+	font-family:Verdana, Geneva, sans-serif;
+}
+
+.authorization input[type=text],
+.authorization input[type=password] {
+	height:20px;
+	width:156px;
+	margin-bottom:5px;
+	border:1px solid #333;
+	border-radius:6px;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+
+.authorization input[type=submit] {
+	width:100%;
+	display:block;
+	padding:2px 0;
+}
+
+/*------ навігація по чемпіонатах ------*/
+.champs ul ul {
+	margin:0 0 10px 10px;
+}
+
+.champs a {
+	display:block;
+	height:13px;
+	margin-bottom:5px;
+	color:#4C9743;
+	padding-left:27px;
+	line-height:13px;
+}
+
+.champs a.ua {
+	background:url(../../back-end/load_img/ua.gif) no-repeat;
+}
+
+.champs a.en {
+	background:url(../../back-end/load_img/en.gif) no-repeat;
+}
+
+.champs a.ger {
+	background:url(../../back-end/load_img/ger.gif) no-repeat;
+}
+
+.champs a.ital {
+	background:url(../../back-end/load_img/it.gif) no-repeat;
+}
+
+.champs a.spain {
+	background:url(../../back-end/load_img/sp.gif) no-repeat;
+}
+
+.champs a.ru {
+	background:url(../../back-end/load_img/ru.gif) no-repeat;
+}
+
+.champs a.lc {
+	background:url(../../back-end/load_img/lc.gif) no-repeat;
+	height:25px;
+	line-height:25px;
+}
+
+.champs a.world_cup {
+	background:url(../../back-end/load_img/world_cup.gif) no-repeat;
+	height:30px;
+	line-height:30px;
+}
