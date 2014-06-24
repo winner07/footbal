@@ -23,14 +23,16 @@ function auth() {
 					$_SESSION["user_login"] = $reg_db->db->query("SELECT `u_login` FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
 					$_SESSION["user_id"] = $reg_db->db->query("SELECT `u_id` FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
 					header("Location: index.php");
-				} else {
+				}
+				else {
 					throw new Exception("Невірний пароль", 1);
 				}
 			}
 			else {
 				throw new Exception("Невірний логін", 1);
 			}
-		} else {
+		}
+		else {
 			throw new Exception("Ви не відправили логін і пароль", 1);
 		}
 	}
