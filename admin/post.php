@@ -33,7 +33,7 @@ if(isset($post_title_en, $post_content_en, $post_title_ua, $post_content_ua, $po
 			}
 			//Інакше для додавання
 			else {
-				echo $post_db->db->exec("INSERT INTO `posts`(`post_title_en`, `post_short_desc_en`, `post_full_desc_en`, `post_title_ua`, `post_short_desc_ua`, `post_full_desc_ua`, `post_cat_id`, `post_date`, `post_author_id`) VALUE($post_title_en, $short_content_en, $full_content_en, $post_title_ua, $short_content_ua, $full_content_ua, $post_cat, NOW(), $post_author)") ? "POST" : "ERROR";
+				echo $post_db->db->exec("INSERT INTO `posts`(`post_title_en`, `post_short_desc_en`, `post_full_desc_en`, `post_title_ua`, `post_short_desc_ua`, `post_full_desc_ua`, `post_cat_id`, `post_author_id`) VALUE($post_title_en, $short_content_en, $full_content_en, $post_title_ua, $short_content_ua, $full_content_ua, $post_cat, $post_author)") ? "POST" : "ERROR";
 			}
 			break;
 		//Якщо зберегти новину як чорновик
@@ -44,7 +44,7 @@ if(isset($post_title_en, $post_content_en, $post_title_ua, $post_content_ua, $po
 			}
 			//Інакше для додавання
 			else {
-				echo $post_db->db->exec("INSERT INTO `posts`(`post_title_en`, `post_short_desc_en`, `post_full_desc_en`, `post_title_ua`, `post_short_desc_ua`, `post_full_desc_ua`, `post_cat_id`, `post_date`, `post_author_id`, `post_status`) VALUE($post_title_en, $short_content_en, $full_content_en, $post_title_ua, $short_content_ua, $full_content_ua, $post_cat, NOW(), $post_author, 2)") ? "DRAFT" : "ERROR";
+				echo $post_db->db->exec("INSERT INTO `posts`(`post_title_en`, `post_short_desc_en`, `post_full_desc_en`, `post_title_ua`, `post_short_desc_ua`, `post_full_desc_ua`, `post_cat_id`, `post_author_id`, `post_status`) VALUE($post_title_en, $short_content_en, $full_content_en, $post_title_ua, $short_content_ua, $full_content_ua, $post_cat, $post_author, 2)") ? "DRAFT" : "ERROR";
 			}
 			break;
 	}

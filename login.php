@@ -19,6 +19,7 @@ function auth() {
 				//Перевірка логіна і пароля
 				$auth_accesss = $reg_db->db->query("SELECT COUNT(*) FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
 				if ($auth_accesss) {
+					$reg_db->db->exec("UPDATE `user` SET `u_date_logged` = NOW() WHERE `u_login` = '$auth_login'");
 					$_SESSION["user_login"] = $reg_db->db->query("SELECT `u_login` FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
 					$_SESSION["user_id"] = $reg_db->db->query("SELECT `u_id` FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
 					header("Location: index.php");

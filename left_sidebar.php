@@ -8,7 +8,7 @@
 			$is_admin = $connect_db->db->query("SELECT `u_role` FROM `user` WHERE `u_login` = '{$_SESSION["user_login"]}'")->fetchColumn(0);
 			
 			echo "<ul>
-					<li><img src=\"$avatar\" alt=\"аватар\"></li>
+					<li><img src=\"$avatar\" alt=\"аватар\" width=\"50\" height=\"50\"></li>
 					<li><strong>{$_SESSION["user_login"]}</strong></li>
 					<li><a href=\"admin\\\" target=\"_blank\">Адмін-панель</a></li>
 					<li><a href=\"profile.php?id={$_SESSION["user_id"]}\">Профіль</a></li>

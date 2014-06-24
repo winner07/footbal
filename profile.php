@@ -19,9 +19,10 @@ include_once "back-end/config/init.php";
         	<?php include_once "left_sidebar.php"; ?>
             
             <div id="content">
-            	<?php
-				
-				?>
+              <?php
+                $user = new Profile($_GET['id']);
+                $user->get_info();
+              ?>
             </div>
             
             <?php include_once "right_sidebar.php"; ?>

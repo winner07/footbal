@@ -267,6 +267,36 @@ header .lang .ua {
 	border:1px solid #9AD590;
 }
 
+/*------ Профіль користувача ------*/
+.user_profile {
+	overflow:hidden;
+}
+
+.user_profile p {
+	margin-bottom:5px;
+}
+
+.user_profile hr {
+	border:none;
+	border-bottom:1px solid #CCC;
+	margin:1em 0;
+}
+
+.user_avatar {
+	width:158px;
+	float:left;
+}
+
+.user_avatar img {
+	border:1px solid #CCC;
+	padding:3px;
+}
+
+.user_info {
+	width:400px;
+	float:right;
+}
+
 /*------ поммилки ------*/
 .warning {
 	background:#FFF7CE;

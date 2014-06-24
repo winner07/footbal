@@ -57,7 +57,7 @@
 			$posts_count = $this->db->query("SELECT COUNT(*) FROM `posts`". (isset($this->list_categories) ? "WHERE `post_cat_id` IN({$this->list_categories})" : NULL))->fetchColumn(0);
 			
 			if ($posts_count) {
-				$posts_query = $this->db->query("SELECT `post_id`, `post_title_{$this->lang}`, `post_short_desc_{$this->lang}`, `post_cat_id`, `post_date`, `u_login`, `cat_name_{$this->lang}` FROM `posts`, `categories`, `user` WHERE `post_status` = 'post' AND `post_cat_id` = `cat_id`". (isset($this->list_categories) ? " AND `post_cat_id` IN({$this->list_categories})" : NULL) ." AND `post_author_id` = `u_id` ORDER BY `post_date` DESC LIMIT $start_offset, $news_on_page");
+				$posts_query = $this->db->query("SELECT `post_id`, `post_title_{$this->lang}`, `post_short_desc_{$this->lang}`, `post_cat_id`, `post_date`, `u_id`, `u_login`, `cat_name_{$this->lang}` FROM `posts`, `categories`, `user` WHERE `post_status` = 'post' AND `post_cat_id` = `cat_id`". (isset($this->list_categories) ? " AND `post_cat_id` IN({$this->list_categories})" : NULL) ." AND `post_author_id` = `u_id` ORDER BY `post_date` DESC LIMIT $start_offset, $news_on_page");
 				
 				if ($posts_query) {
 					while ($post = $posts_query->fetch(PDO::FETCH_ASSOC)) {
@@ -86,7 +86,7 @@
 								</div>
 								<footer>
 									<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
-									<span class="author">{$post["u_login"]}</span>
+									<span class="author"><a href="profile.php?id={$post["u_id"]}">{$post["u_login"]}</a></span>
 								</footer>
 							</article>
 POSTS;
@@ -104,7 +104,7 @@ POSTS;
 			$is_post = $this->db->query("SELECT COUNT(*) FROM `posts` WHERE `post_id` = $post_id")->fetchColumn(0);
 			//Якщо новина існує, вивести її
 			if ($is_post) {
-				$post = $this->db->query("SELECT `post_id`, `post_title_{$this->lang}`, `post_short_desc_{$this->lang}`, `post_full_desc_{$this->lang}`, `post_cat_id`, `post_date`, `post_author_id`, `u_login` FROM `posts`, `user` WHERE `post_status` = 'post' AND `post_id` = $post_id AND `post_author_id` = `u_id` LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+				$post = $this->db->query("SELECT `post_id`, `post_title_{$this->lang}`, `post_short_desc_{$this->lang}`, `post_full_desc_{$this->lang}`, `post_cat_id`, `post_date`, `post_author_id`, `u_id`, `u_login` FROM `posts`, `user` WHERE `post_status` = 'post' AND `post_id` = $post_id AND `post_author_id` = `u_id` LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 				
 				if (!$post) {
 					throw new Exception("Помилка виведення новини, спробуйте пізніше");
@@ -122,7 +122,7 @@ POSTS;
 							</div>
 							<footer>
 								<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
-								<span class="author">{$post["u_login"]}</span>
+								<span class="author"><a href="profile.php?id={$post["u_id"]}">{$post["u_login"]}</a></span>
 							</footer>
 						</article>
 POSTS;

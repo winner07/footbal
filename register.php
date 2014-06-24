@@ -32,16 +32,27 @@ include_once "back-end/config/init.php";
 										//З'єднання з базою даних
 										$regDb = new DB_connect();
 										//Змінні форми
-										$r_login 	= isset($_POST["r_login"])    ? strip_tags(trim($_POST["r_login"]))  : "";
-										$r_email 	= isset($_POST["r_email"])    ? strip_tags(trim($_POST["r_email"]))  : "";
-										$r_sex 		= isset($_POST["r_sex"])      ? strip_tags(trim($_POST["r_sex"]))	   : "";
-										$r_pass 	= isset($_POST["r_pass"])     ? strip_tags(trim($_POST["r_pass"]))	 : "";
-										$r_repass = isset($_POST["r_repass"])   ? strip_tags(trim($_POST["r_repass"])) : "";
-										$r_avatar = isset($_FILES["r_avatar"])  ? $_FILES["r_avatar"]                  : "";
+										$r_login 	  = strip_tags(trim($_POST["r_login"]));
+										$r_name 	  = strip_tags(trim($_POST["r_name"]));
+										$r_surname 	= strip_tags(trim($_POST["r_surname"]));
+										$r_email   	= strip_tags(trim($_POST["r_email"]));
+										$r_sex 		  = strip_tags(trim($_POST["r_sex"]));
+										$r_pass 	  = strip_tags(trim($_POST["r_pass"]));
+										$r_repass   = strip_tags(trim($_POST["r_repass"]));
+										$r_avatar   = $_FILES["r_avatar"];
+
+										//Перевірка правильності логіна
+										if ($r_login && strlen($r_login) <= 30) {
+											$existlogin = $regDb->db->query("SELECT COUNT(*) from `user` where `u_login` = '$r_login'")->fetchColumn(0);
+											if ($existlogin) {
+												$errors["er_login"] = "This login is exists!";
+											}
+										} else {
+											$errors["er_login"] = "Too long login!";
+										}
 										//Перевірка правильності імейлу
 										if ($r_email && strlen($r_email) <= 100) {
-											$existEmail = $regDb->db->query("SELECT COUNT(*) from `user` where `u_email` = '$r_email'");
-											$existEmail = $existEmail->fetchColumn(0);
+											$existEmail = $regDb->db->query("SELECT COUNT(*) from `user` where `u_email` = '$r_email'")->fetchColumn(0);
 											if ($existEmail) {
 												$errors["er_email"] = "This e-mail is exists!";
 											}
@@ -81,14 +92,23 @@ include_once "back-end/config/init.php";
 											}
 										}
 									}
-									//якщо форма не відправлена ??або є помилки введення
+									//якщо форма не відправлена або є помилки введення
 									if (!isset($r_go) || count($errors)) {
 								?>
                 <form method="post" action="" enctype="multipart/form-data">
                     <table class="reg_table">
                         <tr>
                             <td><strong>Login</strong></td>
-                            <td colspan="2"><input type="text" name="r_login" value="<?php echo $r_login; ?>" required max="100"></td>
+                            <td><input type="text" name="r_login" value="<?php echo $r_login; ?>" required max="30"></td>
+                            <td><?php echo isset($errors["er_login"]) ? $errors["er_login"] : NULL; ?></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Name</strong></td>
+                            <td colspan="2"><input type="text" name="r_name" value="<?php echo $r_name; ?>" required max="100"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Surname</strong></td>
+                            <td colspan="2"><input type="text" name="r_surname" value="<?php echo $r_surname; ?>" required max="100"></td>
                         </tr>
                         <tr>
                             <td><strong>E-mail</strong></td>
@@ -114,7 +134,7 @@ include_once "back-end/config/init.php";
                             <td colspan="2"><input type="password" name="r_repass" value="<?php echo $r_repass; ?>" required></td>
                         </tr>
                         <tr>
-                            <td><strong>Avatar (50 * 50) 100 kb</strong></td>
+                            <td><strong>Avatar (150 * 150) 100 kb</strong></td>
                             <td>
                             	<input type="hidden" name="MAX_FILE_SIZE" value="51200">
                             	<input type="file" name="r_avatar" accept="image/*">
@@ -129,12 +149,12 @@ include_once "back-end/config/init.php";
                 <?php
 					} else {
 						//Переміщення аватара в підходящу папку
-						if ($r_avatar["error"] == 0) {
-							$avatar_folder = "back-end/load_img/". $r_avatar["name"];
-							move_uploaded_file($r_avatar["tmp_name"], $avatar_folder);
+						if ($r_avatar && $r_avatar["error"] == 0) {
+							$avatar_src = "back-end/load_img/". $r_avatar["name"];
+							move_uploaded_file($r_avatar["tmp_name"], $avatar_src);
 						}
 						//Запис у базу даних
-						$sqlReg = "INSERT INTO `user` (`u_login`, `u_email`, `u_pass`, `u_sex`, `u_avatar`) VALUES ('$r_login', '$r_email', SHA1('$r_pass'), '$r_sex', '$avatar_folder')";
+						$sqlReg = "INSERT INTO `user` (`u_login`, `u_name`, `u_surname`, `u_email`, `u_pass`, `u_sex`, `u_avatar`, `u_date_reg`) VALUES ('$r_login', '$r_name', '$r_surname', '$r_email', SHA1('$r_pass'), '$r_sex', " . ($avatar_src ? "'$avatar_src'" : "DEFAULT") . ", NOW())";
 						if ($regDb->db->exec($sqlReg)) {
 							echo "<p class=\"ok\">Registration was successful, you can log in to your account</p>";
 						} else {
