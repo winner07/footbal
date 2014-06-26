@@ -23,31 +23,35 @@ include_once "back-end/config/init.php";
             	<?php
             		$page_nav = new Page_navigator($_SESSION['user_lang']);
 					
-								try{
+								try {
 									$page_nav->full_post($_GET["id"]);
-								} catch(Exception $e){
+								}
+								catch (Exception $e) {
 									echo "<p class=\"error\">". $e->getMessage() ."</p>";
 								}
 								
 								$comments = new Comments($_GET["id"], $_SESSION["user_id"]);
 								//Якщо коментар відправлений
-								if(isset($_SESSION["user_login"], $_POST["comment_send"])){
-									try{
+								if (isset($_SESSION["user_login"], $_POST["comment_send"])) {
+									try {
 										$comments->write_comment();
 										header("Location:". $_SERVER["REQUEST_URI"]);
 										ob_end_flush();
-									} catch(Exception $e){
+									}
+									catch(Exception $e) {
 										echo "<p class=\"error\">". $e->getMessage() ."</p>";
 									}
 								}
 								
 								//Вивід коментарів, якщо вони є
-								if($comments->comment_count){
+								if ($comments->comment_count) {
 									$comments->get_comments();
 								}
 								
-								//Якщо користувач авторизований, показати форму додавання коментарів
-								if(isset($_SESSION["user_login"])){
+								//Якщо користувач авторизований і має права коментувати, показати форму додавання коментарів
+								$profile = new Profile($_SESSION["user_id"]);
+
+								if ($profile->check_permission("p_comment")) {
 									$comments->print_form();
 								}
 							?>

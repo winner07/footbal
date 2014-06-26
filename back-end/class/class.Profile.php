@@ -6,14 +6,17 @@ class Profile extends DB_connect {
 	//User info array
 	public $user_info;
 
-	public function __construct($user_id){
+	public function __construct($user_id) {
 		parent::__construct();
 		$this->user_id   = $user_id;
-		$this->user_info = $this->db->query("SELECT * FROM `user` WHERE `u_id` = {$this->user_id}")->fetch(PDO::FETCH_ASSOC);
+
+		if ($this->user_id) {
+			$this->user_info = $this->db->query("SELECT * FROM `user` WHERE `u_id` = {$this->user_id}")->fetch(PDO::FETCH_ASSOC);
+		}
 	}
 
 	//Get full info about user
-	public function get_full_info(){
+	public function get_full_info() {
 		if ($_SESSION["user_id"] == $this->user_info['u_id']) {
 			echo <<<USER
 				<article class="user_profile">
@@ -59,7 +62,8 @@ USER;
 		}
 	}
 
-	public function get_full_info_admin(){
+	//Get full info about user onto admin panel
+	public function get_full_info_admin() {
 			echo <<<USER
 				<article class="user_profile">
 		      <header>
@@ -77,6 +81,13 @@ USER;
 		        </div>
 		    </article>
 USER;
+	}
+
+	//Check permission for user
+	public function check_permission($action) {
+		$perm_role = $this->user_info['u_role'] ? $this->user_info['u_role'] : "guest";
+		$perm_sel  = $this->db->query("SELECT `$action` FROM `permission` WHERE `p_role` = '$perm_role'")->fetchColumn(0);
+		return $perm_sel == "Y" ? true : false;
 	}
 }
 

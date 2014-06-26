@@ -12,7 +12,7 @@
     <div class="box">
         <div class="h_title">&#8250; Manage users</div>
         <ul>
-            <li><a href="users.php" target="_blank" class="icon users">All users</a></li>
+            <li><a href="users.php" class="icon users">All users</a></li>
         </ul>
     </div>
 </aside>
