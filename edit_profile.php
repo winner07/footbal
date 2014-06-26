@@ -19,6 +19,7 @@ include_once "back-end/config/init.php";
             
             <div id="content">
             	<?php
+            			$edit_db = new DB_connect();
             			//Об'єкт користувача
 									$profile = new Profile($_SESSION['user_id']);
 									//Змінна відправки форми
@@ -32,17 +33,19 @@ include_once "back-end/config/init.php";
 										$e_name       = strip_tags(trim($_POST["e_name"]));
 										$e_surname    = strip_tags(trim($_POST["e_surname"]));
 										$e_email      = strip_tags(trim($_POST["e_email"]));
-										$e_sex        = strip_tags(trim($_POST["e_sex"]));
 										$e_old_pass   = strip_tags(trim($_POST["e_old_pass"]));
 										$e_new_pass   = strip_tags(trim($_POST["e_new_pass"]));
 										$e_new_repass = strip_tags(trim($_POST["e_new_repass"]));
 										$e_avatar     = $_FILES["e_avatar"];
+										$set_new_em   = false;
+										$set_new_pass = false;
+										$set_new_av   = false;
 
 										//Перевірка правильності імені
-										if (strlen($e_login) < 2) {
+										if (strlen($e_name) < 2) {
 											$errors["er_name"] = "Too short name!";
 										}
-										if (strlen($e_login) >= 100) {
+										if (strlen($e_name) >= 100) {
 											$errors["er_name"] = "Too long name!";
 										}
 										//Перевірка правильності фамілії
@@ -54,26 +57,38 @@ include_once "back-end/config/init.php";
 										}
 										//Перевірка правильності імейлу
 										if ($e_email && strlen($e_email) <= 100) {
-											$exist_email = $edit_db->db->query("SELECT COUNT(*) from `user` where `u_email` = '$e_email'")->fetchColumn(0);
-											if ($exist_email) {
-												$errors["er_email"] = "This e-mail is exists!";
+											$not_cur_email = $edit_db->db->query("SELECT COUNT(*) from `user` where `u_email` = '$e_email' AND `u_id` = {$_SESSION['user_id']}")->fetchColumn(0);
+											if (!$not_cur_email) {
+												$exist_email = $edit_db->db->query("SELECT COUNT(*) from `user` where `u_email` = '$e_email'")->fetchColumn(0);
+												if ($exist_email) {
+													$errors["er_email"] = "This e-mail is exists!";
+												} else {
+													$set_new_em = !$set_new_em;
+												}
 											}
 										}
 										else {
 											$errors["er_email"] = "Too long e-mail!";
 										}
 										//Перевірка правильності пароля
-										if (strlen($e_pass) >= 6 && strlen($e_pass) <= 100) {
-											if (strcmp($e_pass, $e_repass) != 0) {
-												$errors["er_pass"] = "Passwords do not match!!";
+										if ($e_old_pass && strlen($e_old_pass) >= 6 && strlen($e_old_pass) <= 100) {
+											$exist_pass = $edit_db->db->query("SELECT COUNT(*) from `user` where `u_pass` = SHA1('$e_old_pass')")->fetchColumn(0);
+											if ($exist_pass) {
+												if (strlen($e_new_pass) >= 6 && strlen($e_new_pass) <= 100) {
+													if (strcmp($e_new_pass, $e_new_repass) == 0) {
+														$set_new_pass = !$set_new_pass;
+													}
+													else {
+														$errors["er_new_pass"] = "Passwords do not match";
+													}
+												}
+												else {
+													$errors["er_new_pass"] = "The password must be at least 6 and no more than 100 characters!";
+												}
 											}
-										}
-										else {
-											$errors["er_pass"] = "The password must be at least 6 and no more than 100 characters!";
-										}
-										//Перевірка правильності статі
-										if ($e_sex != "1" && $e_sex != "2") {
-											$errors["er_sex"] = "Do not put sex right";
+											else {
+												$errors["er_pass"] = "Password is incorrect";
+											}
 										}
 										//Перевірка правильності аватара
 										if ($e_avatar["error"] != 4) {
@@ -95,44 +110,57 @@ include_once "back-end/config/init.php";
 													break;
 											}
 										}
+
+										//Відправка змін в базу
+										if (!count($errors)) {
+											//Переміщення аватара в підходящу папку
+											if ($e_avatar && $e_avatar["error"] == 0) {
+												$avatar_src = "back-end/load_img/". $e_avatar["name"];
+												move_uploaded_file($e_avatar["tmp_name"], $avatar_src);
+												$set_new_av = !$set_new_av;
+											}
+											//Запис у базу даних
+											$sql_edit = "UPDATE `user` SET `u_name` = '$e_name', `u_surname` = '$e_surname'" .
+												($set_new_em ? ", `u_email` = '$e_email'" : NULL) .
+												($set_new_pass ? ", `u_pass` = SHA1('$e_new_pass')" : NULL) . 
+											  ($set_new_av ? ", `u_avatar` = '$avatar_src'" : NULL) . " WHERE `u_id` = {$_SESSION['user_id']}";
+
+											if ($edit_db->db->exec($sql_edit)) {
+												echo "<p class=\"ok\">Updated has been successful</p>";
+											} else {
+												echo "<p class=\"error\">Updated has been error</p>";
+											}
+										}
 									}
 								?>
                 <form method="post" action="" enctype="multipart/form-data">
                     <table class="reg_table">
                         <tr>
                             <td><strong>Name</strong></td>
-                            <td colspan="2"><input type="text" name="e_name" value="<?php echo $profile->user_info['u_name']; ?>" required max="100"></td>
+                            <td colspan="2"><input type="text" name="e_name" value="<?php echo $profile->user_info['u_name']; ?>" max="100"></td>
                         </tr>
                         <tr>
                             <td><strong>Surname</strong></td>
-                            <td colspan="2"><input type="text" name="e_surname" value="<?php echo $profile->user_info['u_surname']; ?>" required max="100"></td>
+                            <td colspan="2"><input type="text" name="e_surname" value="<?php echo $profile->user_info['u_surname']; ?>" max="100"></td>
                         </tr>
                         <tr>
                             <td><strong>E-mail</strong></td>
-                            <td><input type="email" name="e_email" value="<?php echo $profile->user_info['u_email']; ?>" max="100" required></td>
+                            <td><input type="email" name="e_email" value="<?php echo $profile->user_info['u_email']; ?>" max="100"></td>
                             <td><?php echo isset($errors["er_email"]) ? $errors["er_email"] : NULL; ?></td>
                         </tr>
                         <tr>
-                            <td><strong>Sex</strong></td>
-                            <td><input type="radio" name="e_sex" <?php echo $profile->user_info['u_sex'] == "Male" ? "checked" : NULL; ?> value="1" id="male"><label for="male">Male</label>
-                                <br>
-                                <input type="radio" name="e_sex" <?php echo $profile->user_info['u_sex'] == "Female" ? "checked" : NULL; ?> value="2" id="female"><label for="female">Female</label>
-                            </td>
-                            <td><?php echo isset($errors["er_sex"]) ? $errors["er_sex"] : NULL; ?></td>
-                        </tr>
-                        <tr>
                             <td><strong>Old password</strong></td>
-                            <td><input type="password" name="e_old_pass" value="<?php echo $e_old_pass; ?>" required></td>
+                            <td><input type="password" name="e_old_pass" value=""></td>
                             <td><?php echo isset($errors["er_old_pass"]) ? $errors["er_old_pass"] : NULL; ?></td>
                         </tr>
                         <tr>
                             <td><strong>New password</strong></td>
-                            <td><input type="password" name="e_new_pass" value="<?php echo $e_new_pass; ?>" required></td>
+                            <td><input type="password" name="e_new_pass" value=""></td>
                             <td><?php echo isset($errors["er_new_pass"]) ? $errors["er_new_pass"] : NULL; ?></td>
                         </tr>
                         <tr>
                             <td><strong>Repeat password</strong></td>
-                            <td colspan="2"><input type="password" name="e_new_repass" value="<?php echo $e_new_repass; ?>" required></td>
+                            <td colspan="2"><input type="password" name="e_new_repass" value=""></td>
                         </tr>
                         <tr>
                             <td><strong>Avatar (150 * 150) 100 kb</strong></td>
@@ -147,23 +175,6 @@ include_once "back-end/config/init.php";
                         </tr>
                     </table>
                 </form>
-                <?php
-					/*} else {
-						//Переміщення аватара в підходящу папку
-						if ($e_avatar && $e_avatar["error"] == 0) {
-							$avatar_src = "back-end/load_img/". $e_avatar["name"];
-							move_uploaded_file($e_avatar["tmp_name"], $avatar_src);
-						}
-						//Запис у базу даних
-						$sqlReg = "INSERT INTO `user` (`u_login`, `u_name`, `u_surname`, `u_email`, `u_pass`, `u_sex`, `u_avatar`, `u_date_reg`) VALUES ('$e_login', '$e_name', '$e_surname', '$e_email', SHA1('$e_pass'), '$e_sex', " . ($avatar_src ? "'$avatar_src'" : "DEFAULT") . ", NOW())";
-						if ($edit_db->db->exec($sqlReg)) {
-							echo "<p class=\"ok\">Registration was successful, you can log in to your account</p>";
-						} else {
-							echo "<p class=\"error\">Error registering again later</p>";
-						}
-					}
-				}*/
-				?>
             </div>
             
             <?php include_once "right_sidebar.php"; ?>

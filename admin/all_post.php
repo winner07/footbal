@@ -45,7 +45,7 @@
 											<td>". ($postRow["post_status"] == "post" ? "Опубліковано" : "Чорновик") ."</td>
 											<td>{$postRow["cat_name_{$_SESSION['user_lang']}"]}</td>
 											<td>{$postRow["post_date"]}</td>
-											<td>{$postRow["u_login"]}</td>
+											<td><a href=\"profile.php?id={$postRow["u_id"]}\">{$postRow["u_login"]}</a></td>
 										</tr>";
 								}
 							?>

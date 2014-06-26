@@ -6,7 +6,10 @@ include_once "back-end/config/init.php";
 <head>
 	<meta charset="urf-8">
 	<link href="front-end/css/style.css" rel="stylesheet">
-    <link href="front-end/css/page_nav.css" rel="stylesheet">
+    <link href="front-end/js/jquery-ui-1.10.4.custom/css/black-tie/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+    <script src="front-end/js/jquery-1.10.2.min.js"></script>
+    <script src="front-end/js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+    <script src="front-end/js/del_profile.js"></script>
 	<title>Football + | Profile</title>
 </head>
 

@@ -30,20 +30,17 @@ include_once "back-end/config/init.php";
 									//Якщо форма відправлена
 									if (isset($r_go)) {
 										//З'єднання з базою даних
-										$regDb = new DB_connect();
+										$reg_db = new DB_connect();
 										//Змінні форми
 										$r_login 	  = strip_tags(trim($_POST["r_login"]));
-										$r_name 	  = strip_tags(trim($_POST["r_name"]));
-										$r_surname 	= strip_tags(trim($_POST["r_surname"]));
 										$r_email   	= strip_tags(trim($_POST["r_email"]));
-										$r_sex 		  = strip_tags(trim($_POST["r_sex"]));
 										$r_pass 	  = strip_tags(trim($_POST["r_pass"]));
 										$r_repass   = strip_tags(trim($_POST["r_repass"]));
 										$r_avatar   = $_FILES["r_avatar"];
 
 										//Перевірка правильності логіна
 										if ($r_login && strlen($r_login) <= 30) {
-											$existlogin = $regDb->db->query("SELECT COUNT(*) from `user` where `u_login` = '$r_login'")->fetchColumn(0);
+											$existlogin = $reg_db->db->query("SELECT COUNT(*) from `user` where `u_login` = '$r_login'")->fetchColumn(0);
 											if ($existlogin) {
 												$errors["er_login"] = "This login is exists!";
 											}
@@ -52,7 +49,7 @@ include_once "back-end/config/init.php";
 										}
 										//Перевірка правильності імейлу
 										if ($r_email && strlen($r_email) <= 100) {
-											$existEmail = $regDb->db->query("SELECT COUNT(*) from `user` where `u_email` = '$r_email'")->fetchColumn(0);
+											$existEmail = $reg_db->db->query("SELECT COUNT(*) from `user` where `u_email` = '$r_email'")->fetchColumn(0);
 											if ($existEmail) {
 												$errors["er_email"] = "This e-mail is exists!";
 											}
@@ -64,12 +61,9 @@ include_once "back-end/config/init.php";
 											if (strcmp($r_pass, $r_repass) != 0) {
 												$errors["er_pass"] = "Passwords do not match!!";
 											}
-										} else {
-											$errors["er_pass"] = "The password must be at least 6 and no more than 100 characters!";
 										}
-										//Перевірка правильності статі
-										if ($r_sex != "1" && $r_sex != "2") {
-											$errors["er_sex"] = "Do not put sex right";
+										else {
+											$errors["er_pass"] = "The password must be at least 6 and no more than 100 characters!";
 										}
 										//Перевірка правильності аватара
 										if ($r_avatar["error"] != 4) {
@@ -103,27 +97,10 @@ include_once "back-end/config/init.php";
                             <td><?php echo isset($errors["er_login"]) ? $errors["er_login"] : NULL; ?></td>
                         </tr>
                         <tr>
-                            <td><strong>Name</strong></td>
-                            <td colspan="2"><input type="text" name="r_name" value="<?php echo $r_name; ?>" required max="100"></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Surname</strong></td>
-                            <td colspan="2"><input type="text" name="r_surname" value="<?php echo $r_surname; ?>" required max="100"></td>
-                        </tr>
-                        <tr>
                             <td><strong>E-mail</strong></td>
                             <td><input type="email" name="r_email" value="<?php echo $r_email; ?>" max="100" required></td>
                             <td><?php echo isset($errors["er_email"]) ? $errors["er_email"] : NULL; ?></td>
                         </tr>
-                        <tr>
-                            <td><strong>Sex</strong></td>
-                            <td><input type="radio" name="r_sex" checked value="1" id="male"><label for="male">Male</label>
-                                <br>
-                                <input type="radio" name="r_sex" value="2" id="female"><label for="female">Female</label>
-                            </td>
-                            <td><?php echo isset($errors["er_sex"]) ? $errors["er_sex"] : NULL; ?></td>
-                        </tr>
-                        
                         <tr>
                             <td><strong>Password</strong></td>
                             <td><input type="password" name="r_pass" value="<?php echo $r_pass; ?>" required></td>
@@ -154,8 +131,9 @@ include_once "back-end/config/init.php";
 							move_uploaded_file($r_avatar["tmp_name"], $avatar_src);
 						}
 						//Запис у базу даних
-						$sqlReg = "INSERT INTO `user` (`u_login`, `u_name`, `u_surname`, `u_email`, `u_pass`, `u_sex`, `u_avatar`, `u_date_reg`) VALUES ('$r_login', '$r_name', '$r_surname', '$r_email', SHA1('$r_pass'), '$r_sex', " . ($avatar_src ? "'$avatar_src'" : "DEFAULT") . ", NOW())";
-						if ($regDb->db->exec($sqlReg)) {
+						$sql_reg = "INSERT INTO `user` (`u_login`, `u_email`, `u_pass`, `u_avatar`, `u_date_reg`) VALUES ('$r_login', '$r_email', SHA1('$r_pass'), " . ($avatar_src ? "'$avatar_src'" : "DEFAULT") . ", NOW())";
+
+						if ($reg_db->db->exec($sql_reg)) {
 							echo "<p class=\"ok\">Registration was successful, you can log in to your account</p>";
 						} else {
 							echo "<p class=\"error\">Error registering again later</p>";

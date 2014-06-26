@@ -567,12 +567,42 @@ table .draft {
 	line-height:16px;
 }
 
+/*------ Профіль користувача ------*/
+.user_profile {
+	overflow:hidden;
+}
+
+.user_profile p {
+	margin-bottom:5px;
+}
+
+.user_profile hr {
+	border:none;
+	border-bottom:1px solid #CCC;
+	margin:1em 0;
+}
+
+.user_avatar {
+	width:158px;
+	margin-right:20px;
+	float:left;
+}
+
+.user_avatar img {
+	border:1px solid #CCC;
+	padding:3px;
+}
+
+.user_info {
+	float:left;
+}
+
 /*--------- Діалог редагування ---------*/
 #edit_dialog label {
 	display:block;
 }
 
-#edit_dialog input[type="text"] {
+#edit_dialog input, #edit_dialog select {
 	width:100%;
 	height:1.5em;
 	margin-bottom:10px;
