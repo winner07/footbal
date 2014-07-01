@@ -23,8 +23,8 @@ include_once "back-end/config/init.php";
             
             <div id="content">
               <?php
-                $user = new Profile($_GET['id']);
-                $user->get_full_info();
+                $user = new Profile();
+                $user->get_full_info($_GET['id']);
               ?>
             </div>
             

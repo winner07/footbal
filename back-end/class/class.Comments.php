@@ -1,6 +1,6 @@
 <?php
 
-class Comments extends DB_connect{
+class Comments extends DB_connect {
 	public $comment_count;    //Кількість коментарів у базі даних
 	public $comment_post_id;  //ID поста для виведення / відправлення коментарів
 	public $comment_user_id;  //ID користувача для відправки коментарів
@@ -17,12 +17,12 @@ class Comments extends DB_connect{
 	public function get_comments() {
 		$select_comments = $this->db->query("SELECT `comment_text`, `comment_date`, `u_login`, `u_avatar` FROM `comments`, `user` WHERE `comment_post_id` = {$this->comment_post_id} AND `comment_user_id` = `u_id` ORDER BY `comment_date`");
 		
-		echo "<section><h2>Коментарі</h2>";
+		echo "<section><h2>Comments</h2>";
 		while ($comment = $select_comments->fetch(PDO::FETCH_ASSOC)) {
 			echo <<<COMMENT
 				<article class="comment">
 					<header>
-						<img src="{$comment["u_avatar"]}">
+						<img src="{$comment["u_avatar"]}" width="50" height="50">
 						<strong class="author">{$comment["u_login"]}</strong>
 						<time datetime="{$comment["comment_date"]}">{$comment["comment_date"]}</time>
 					</header>
@@ -36,7 +36,7 @@ COMMENT;
 	//Форма відправлення коментарів
 	public function print_form() {
 		echo <<<FORM
-		<h2>Додати коментар</h2>
+		<h2>Add comment</h2>
 		<form method="post" action="{$_SERVER["PHP_SELF"]}?{$_SERVER["QUERY_STRING"]}" class="comment_form">
 			<input type="hidden" id="comment_post_id" name="comment_post_id" value="{$this->comment_post_id}">
 			<input type="hidden" id="comment_user_id" name="comment_user_id" value="{$this->comment_user_id}">

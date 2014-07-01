@@ -27,6 +27,7 @@
 		 * @return 
 		 */
 		public function print_news($news_category, $n_page, $news_on_page) {
+			global $translate;
 			//Якщо обрана якась категорія
 			if (isset($news_category)) {
 				$this->news_category = $news_category;
@@ -82,7 +83,7 @@
 								</header>
 								<div class="content">
 									{$post["post_short_desc_{$this->lang}"]}
-									<a href="post.php?category={$post["post_cat_id"]}&id={$post["post_id"]}">READ MORE</a>
+									<a href="post.php?category={$post["post_cat_id"]}&id={$post["post_id"]}">{$translate->get_word('more_link')}</a>
 								</div>
 								<footer>
 									<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>

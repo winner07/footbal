@@ -60,8 +60,8 @@
                     <div class="box_content categories">
                         <?php
                         	$category = new Menu($_SESSION['user_lang']);
-							$category->select_categorie(0, NULL);
-						?>
+            							$category->select_categorie(0, NULL);
+            						?>
                     </div>
                 </div>
             </aside>

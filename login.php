@@ -23,9 +23,9 @@ function auth() {
 				if ($auth_accesss) {
 					//Перевірка прав авторизації
 					$login_id = $reg_db->db->query("SELECT `u_id` FROM `user` WHERE `u_login` = '$auth_login' AND `u_pass` = SHA1('$auth_pass');")->fetchColumn(0);
-					$profile = new Profile($login_id);
+					$profile = new Profile();
 
-					if ($profile->check_permission("p_auth")) {
+					if ($profile->check_permission($login_id, "p_auth")) {
 						$reg_db->db->exec("UPDATE `user` SET `u_date_logged` = NOW() WHERE `u_login` = '$auth_login'");
 						$_SESSION["user_login"] = $auth_login;
 						$_SESSION["user_id"] = $login_id;

@@ -32,7 +32,7 @@ include_once "back-end/config/init.php";
 								
 								$comments = new Comments($_GET["id"], $_SESSION["user_id"]);
 								//Якщо коментар відправлений
-								if (isset($_SESSION["user_login"], $_POST["comment_send"])) {
+								if ($profile->check_permission($_SESSION["user_id"], "p_comment") && isset($_SESSION["user_id"], $_POST["comment_send"])) {
 									try {
 										$comments->write_comment();
 										header("Location:". $_SERVER["REQUEST_URI"]);
@@ -49,9 +49,7 @@ include_once "back-end/config/init.php";
 								}
 								
 								//Якщо користувач авторизований і має права коментувати, показати форму додавання коментарів
-								$profile = new Profile($_SESSION["user_id"]);
-
-								if ($profile->check_permission("p_comment")) {
+								if ($profile->check_permission($_SESSION["user_id"], "p_comment")) {
 									$comments->print_form();
 								}
 							?>

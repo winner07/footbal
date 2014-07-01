@@ -2,22 +2,17 @@
 
 class Right_sidebar extends DB_connect{
 	public function __construct() {
-		//Âèêëèê áàòüê³âñüêîãî êîíñòðóêòîðà ï³äêëþ÷åííÿ áàçè äàíèõ
+		//Ð’Ð¸ÐºÐ»Ð¸Ðº Ð±Ð°Ñ‚ÑŒÐºÑ–Ð²ÑÑŒÐºÐ¾Ð³Ð¾ ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ð° Ð¿Ñ–Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð½Ñ Ð±Ð°Ð·Ð¸ Ð´Ð°Ð½Ð¸Ñ…
 		parent::__construct();
 	}
 	
-	//Âèâ³ä êîíêðåòíî¿ òóðí³ðíî¿ òàáëèö³
+	//Ð’Ð¸Ð²Ñ–Ð´ ÐºÐ¾Ð½ÐºÑ€ÐµÑ‚Ð½Ð¾Ñ— Ñ‚ÑƒÑ€Ð½Ñ–Ñ€Ð½Ð¾Ñ— Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ–
 	public function print_l_table($champ_id = 13) {
 		$isset_table = $this->db->query("SELECT COUNT(*) FROM `league_tables` WHERE `l_id` = $champ_id")->fetchColumn(0);
 		
 		if($isset_table) {
 			$select_l_table = $this->db->query("SELECT `l_widget` FROM `league_tables` WHERE `l_id` = $champ_id")->fetchColumn(0);
-			echo <<<TABLE_WIDGET
-				<div class="widget">
-    				<h2>Tournament table</h2>
-					$select_l_table
-				</div>
-TABLE_WIDGET;
+			echo $select_l_table;
 		}
 	}
 }
