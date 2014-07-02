@@ -69,10 +69,10 @@ FORM;
 		if ($comment_text) {
 			//Обрезка строки до 15 символ включая последнее слово
 			if (!$comment_topic) {
-				$end = strlen($comment_text) >= 15 ? 15 : strlen($comment_text);
-				$comment_topic = substr($comment_text, 0, $end);
-				if (strlen($comment_topic) == 15 && $comment_topic[15] != ' ') {
-					$comment_topic = substr($comment_text, 0, strpos($comment_text, ' ', 15));
+				$end = mb_strlen($comment_text, 'UTF-8') >= 15 ? 15 : mb_strlen($comment_text, 'UTF-8');
+				$comment_topic = mb_substr($comment_text, 0, $end, 'UTF-8');
+				if (mb_strlen($comment_topic, 'UTF-8') == 15) {
+					$comment_topic = mb_substr($comment_text, 0, mb_strpos($comment_text, ' ', 15), 'UTF-8');
 				}
 			}
 
