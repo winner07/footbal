@@ -10,6 +10,9 @@
             <?php if ($profile->check_permission($_SESSION["admin_id"], "p_create_own_post")): ?>
                 <li><a href="add_post.php" class="icon add_page">Add news</a></li>
             <?php endif; ?>
+            <?php if ($profile->check_permission($_SESSION["admin_id"], "p_edit_comment")): ?>
+                <li><a href="all_comment.php" class="icon contact">Manage comments</a></li>
+            <?php endif; ?>
             <li><a  href="categories.php" class="icon category">Manage categories</a></li>
         </ul>
     </div>

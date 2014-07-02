@@ -25,8 +25,8 @@
             
             <div id="main" class="index">
             	<?php
-                $user = new Profile($_GET['id']);
-                $user->get_full_info_admin();
+                $user = new Profile();
+                $user->get_full_info_admin($_GET['id']);
               ?>
             </div>
 

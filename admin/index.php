@@ -31,27 +31,27 @@
                     <?php
                     	$last_posts = $info_DB->db->query("SELECT `post_title_{$_SESSION['user_lang']}`, `post_date`, `cat_name_{$_SESSION['user_lang']}`, `u_login` FROM `posts`, `categories`, `user` WHERE `post_cat_id` = `cat_id` AND `post_author_id` = `u_id` ORDER BY `post_date` DESC LIMIT 5");
 		
-						echo "<section>";
-						while($post = $last_posts->fetch(PDO::FETCH_ASSOC)){
-							echo <<<POST
-								<article class="post">
-									<header>
-										<strong class="author">{$post["u_login"]}</strong>
-										<time datetime="{$post["post_date"]}">{$post["post_date"]}</time>
-										<h3 class="cat_name">{$post["cat_name_{$_SESSION['user_lang']}"]}</h3>
-										<span class="arrow">&rarr;</span>
-										<h3>{$post["post_title_{$_SESSION['user_lang']}"]}</h3>
-									</header>
-								</article>
+											echo "<section>";
+											while($post = $last_posts->fetch(PDO::FETCH_ASSOC)){
+												echo <<<POST
+													<article class="post">
+														<header>
+															<strong class="author">{$post["u_login"]}</strong>
+															<time datetime="{$post["post_date"]}">{$post["post_date"]}</time>
+															<h3 class="cat_name">{$post["cat_name_{$_SESSION['user_lang']}"]}</h3>
+															<span class="arrow">&rarr;</span>
+															<h3>{$post["post_title_{$_SESSION['user_lang']}"]}</h3>
+														</header>
+													</article>
 POST;
-						}
-						echo "</section>";
-					?>
-                    <a href="all_post.php" class="all_link">Всі новини</a>
-                </div>
+											}
+											echo "</section>";
+										?>
+                   <a href="all_post.php" class="all_link">All posts</a>
+               </div>
                 
                 <div class="info_block last_comments">
-                	<h2 class="title">Останні коментарі</h2>
+                	<h2 class="title">Last comments</h2>
                     <?php
                     	$last_comments = $info_DB->db->query("SELECT `comment_text`, `comment_date`, `post_title_{$_SESSION['user_lang']}`, `u_login` FROM `comments`, `user`, `posts` WHERE `comment_post_id` = `post_id` AND `comment_user_id` = `u_id` ORDER BY `comment_date` DESC LIMIT 5");
 		
@@ -70,7 +70,7 @@ COMMENT;
 						}
 						echo "</section>";
 					?>
-                    <a href="comments.php" class="all_link">Всі коментарі</a>
+                    <a href="all_comment.php" class="all_link">All comments</a>
                 </div>
             </div>
 

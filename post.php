@@ -7,7 +7,7 @@ include_once "back-end/config/init.php";
 <head>
 	<meta charset="urf-8">
 	<link href="front-end/css/style.css" rel="stylesheet">
-    <link href="front-end/css/page_nav.css" rel="stylesheet">
+  <link href="front-end/css/page_nav.css" rel="stylesheet">
 	<title>Football +</title>
 </head>
 
@@ -45,7 +45,8 @@ include_once "back-end/config/init.php";
 								
 								//Вивід коментарів, якщо вони є
 								if ($comments->comment_count) {
-									$comments->get_comments();
+									$comments->get_comments($_GET["comment_page"], 10);
+									$comments->print_nav(5);
 								}
 								
 								//Якщо користувач авторизований і має права коментувати, показати форму додавання коментарів

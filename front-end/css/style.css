@@ -256,11 +256,25 @@ header .lang .ua {
 	color:#43853B;
 }
 
+.comment header h3 {
+	font-size:1em;
+	color:#000;
+}
+
 .comment p {
 	margin:0 0 10px 0;
 }
 
 /*------ форма відправки коментарів ------*/
+.comment_form label {
+	display:block;
+}
+
+.comment_form #comment_topic {
+	border:1px solid #9AD590;
+	margin-bottom:10px;
+}
+
 .comment_form textarea {
 	width:568px;
 	height:150px;

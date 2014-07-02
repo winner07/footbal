@@ -1,7 +1,8 @@
 <?php
 	session_start();
-	if(!isset($_SESSION["admin_login"]))
+	if (!isset($_SESSION["admin_login"])) {
 		header("Location: login.php");
+    }
 		
 	include_once "../back-end/config/init.php";
 ?>
@@ -13,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="js/jquery-ui-1.10.4.custom/css/black-tie/jquery-ui-1.10.4.custom.css" rel="stylesheet">
     <script src="js/jquery-1.10.2.min.js"></script>
-	<script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+    <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
     <script src="js/delete_post.js"></script>
 </head>
 <body>

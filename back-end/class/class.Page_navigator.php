@@ -16,16 +16,6 @@
 		}
 		
 		//Вивід новин для заданої сторінки
-		/**
-		 * Bla bla bla.
-		 *
-		 * @param int $news_category
-		 *   asfdsdfdsf dsf.
-		 * @param object $
-		 *   asd as das das .
-		 *
-		 * @return 
-		 */
 		public function print_news($news_category, $n_page, $news_on_page) {
 			global $translate;
 			//Якщо обрана якась категорія
@@ -170,27 +160,29 @@ POSTS;
 			}
 			
 			//Вивід
-			echo "<ul id=\"page_nav\">";
-			
-			if ($start != 1) {
-				echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}" : "") ."\">1</a></li>";
-				echo "<li class=\"ellips\">...</li>";
-			}
-			
-			for ($i = $start; $i <= $end; $i++) {
-				if ($i == $n_page) {
-					echo "<li class=\"current_page\">$i</li>";
-					continue;
+			if ($max_pages != 1) {
+				echo "<ul id=\"page_nav\">";
+				
+				if ($start != 1) {
+					echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}" : "") ."\">1</a></li>";
+					echo "<li class=\"ellips\">...</li>";
 				}
-				echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}&" : "?") ."page=$i\">$i</a></li>";
+				
+				for ($i = $start; $i <= $end; $i++) {
+					if ($i == $n_page) {
+						echo "<li class=\"current_page\">$i</li>";
+						continue;
+					}
+					echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}&" : "?") ."page=$i\">$i</a></li>";
+				}
+				
+				if ($end != $max_pages) {
+					echo "<li class=\"ellips\">...</li>";
+					echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}&" : "?") ."page=$max_pages\">$max_pages</a></li>";
+				}
+				
+				echo "</ul>";
 			}
-			
-			if ($end != $max_pages) {
-				echo "<li class=\"ellips\">...</li>";
-				echo "<li><a href=\"". $_SERVER["PHP_SELF"] .(isset($this->news_category) ? "?category={$this->news_category}&" : "?") ."page=$max_pages\">$max_pages</a></li>";
-			}
-			
-			echo "</ul>";
 		}
 	}
 ?>
