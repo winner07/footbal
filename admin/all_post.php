@@ -30,7 +30,7 @@
                     <div class="h_title">Менеджер новин</div>
                     <table width="860">
                     	<tr>
-                        	<th width="35%">Тема</th><th width="15%">Статус</th><th width="20%">Категорія</th><th width="17%">Дата</th><th width="13%">Автор</th>
+                        	<th width="50%">Тема</th><th width="10%">Статус</th><th width="15%">Категорія</th><th width="15%">Дата</th><th width="10%">Автор</th>
                       </tr>
                       <?php
                       	$postsDb = new DB_connect();

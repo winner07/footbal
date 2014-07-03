@@ -22,25 +22,56 @@ include_once "back-end/config/init.php";
             <div id="content">
             	<?php
             		$page_nav = new Page_navigator($_SESSION['user_lang']);
-					
-								try {
-									$page_nav->full_post($_GET["id"]);
-								}
-								catch (Exception $e) {
-									echo "<p class=\"error\">". $e->getMessage() ."</p>";
-								}
-								
 								$comments = new Comments($_GET["id"], $_SESSION["user_id"]);
+
 								//Якщо коментар відправлений
 								if ($profile->check_permission($_SESSION["user_id"], "p_comment") && isset($_SESSION["user_id"], $_POST["comment_send"])) {
 									try {
 										$comments->write_comment();
 										header("Location:". $_SERVER["REQUEST_URI"]);
+										exit();
 										ob_end_flush();
 									}
 									catch(Exception $e) {
 										echo "<p class=\"error\">". $e->getMessage() ."</p>";
 									}
+								}
+
+								//Якщо оцінка голосування відправлена
+								if ($profile->check_permission($_SESSION["user_id"], "p_vote") && isset($_SESSION["user_id"], $_POST["rate_go"])) {
+									try {
+										$page_nav->write_rate();
+										$_SESSION["user_rate"] = "Y";
+										header("Location:". $_SERVER["REQUEST_URI"]);
+										exit();
+									}
+									catch (Exception $e) {
+										echo "<p class=\"error\">". $e->getMessage() ."</p>";
+									}
+								}
+
+								//Якщо видалити оцінку
+								if ($profile->check_permission($_SESSION["user_id"], "p_vote") && isset($_SESSION["user_id"], $_POST["rate_del"])) {
+									$page_nav->delete_rate();
+									header("Location:". $_SERVER["REQUEST_URI"]);
+									exit();
+								}
+
+								//Якщо видалити всі оцінки за матеріла
+								if ($profile->check_permission($_SESSION["user_id"], "p_vote") && isset($_SESSION["user_id"], $_POST["rate_del_all"])) {
+									$page_nav->delete_all_rate();
+									header("Location:". $_SERVER["REQUEST_URI"]);
+									exit();
+								}
+
+								//Вивід новини
+								try {
+									$page_nav->message_rate();
+									$page_nav->av_rate();
+									$page_nav->full_post($_GET["id"], $profile->check_permission($_SESSION["user_id"], "p_vote"));
+								}
+								catch (Exception $e) {
+									echo "<p class=\"error\">". $e->getMessage() ."</p>";
 								}
 								
 								//Вивід коментарів, якщо вони є

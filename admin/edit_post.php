@@ -9,9 +9,9 @@
 	$post_id         = $_GET["post_id"];
 	$edit_post_DB    = new DB_connect();
 	$edit_post       = $edit_post_DB->db->query("SELECT * FROM `posts` WHERE `post_id` = $post_id LIMIT 1")->fetch(PDO::FETCH_ASSOC);
-	$post_title      = htmlspecialchars($edit_post["post_title"]);
-	$post_short_desc = $edit_post["post_short_desc"];
-	$post_full_desc  = $edit_post["post_full_desc"];
+	$post_title      = htmlspecialchars($edit_post["post_title_en"]);
+	$post_short_desc = $edit_post["post_short_desc_en"];
+	$post_full_desc  = $edit_post["post_full_desc_en"];
 	$post_author_id  = $edit_post["post_author_id"];
 	$post_cat_id     = $edit_post["post_cat_id"];
 ?>
@@ -40,7 +40,7 @@
                     <div class="h_title">Редагування новини</div>
                     <form method="post" action="post.php" id="form_post">
                     	<input type="text" placeholder="Введіть заголовок" name="post_title" id="post_title" class="post_title" max="255" value="<?php echo $post_title ?>">
-                    	<textarea name="post_content" id="post_content">
+                    	<textarea name="post_content" id="post_content_en">
                         	<?php
                             	echo $post_short_desc;
 								
@@ -69,7 +69,7 @@
                     <div class="h_title">&#8250; Чемпіонати</div>
                     <div class="box_content categories">
                         <?php
-                        	$category = new Menu();
+                        	$category = new Menu($_SESSION['user_lang']);
 							$category->select_categorie(0, $post_cat_id);
 						?>
                     </div>

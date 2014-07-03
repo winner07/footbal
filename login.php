@@ -28,7 +28,8 @@ function auth() {
 					if ($profile->check_permission($login_id, "p_auth")) {
 						$reg_db->db->exec("UPDATE `user` SET `u_date_logged` = NOW() WHERE `u_login` = '$auth_login'");
 						$_SESSION["user_login"] = $auth_login;
-						$_SESSION["user_id"] = $login_id;
+						$_SESSION["user_id"]    = $login_id;
+						$_SESSION["user_role"]  = $reg_db->db->query("SELECT `u_role` FROM `user` WHERE `u_id` = {$_SESSION["user_id"]}")->fetchColumn(0);
 						header("Location: index.php");
 					}
 					else {

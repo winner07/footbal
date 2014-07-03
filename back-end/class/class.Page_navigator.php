@@ -1,5 +1,5 @@
 <?php
-	class Page_navigator extends DB_connect {
+	class Page_navigator extends Rate {
 
 		protected $lang;
 		protected $n_page; //Номер сторінки 
@@ -91,7 +91,7 @@ POSTS;
 		}
 		
 		//Вивід повної новини
-		public function full_post($post_id) {
+		public function full_post($post_id, $rate) {
 			$is_post = $this->db->query("SELECT COUNT(*) FROM `posts` WHERE `post_id` = $post_id")->fetchColumn(0);
 			//Якщо новина існує, вивести її
 			if ($is_post) {
@@ -102,21 +102,33 @@ POSTS;
 				}
 				$date = explode(" ", $post["post_date"]);
 				
-					echo <<<POSTS
-						<article class="post">
-							<header>
-								<h1>{$post["post_title_{$this->lang}"]}</h1>
-							</header>
-							<div class="content">
-								{$post["post_short_desc_{$this->lang}"]}
-								{$post["post_full_desc_{$this->lang}"]}
-							</div>
-							<footer>
-								<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
-								<span class="author"><a href="profile.php?id={$post["u_id"]}">{$post["u_login"]}</a></span>
-							</footer>
-						</article>
-POSTS;
+				//Проверка прав на голосование
+				if ($rate) {
+					$rate_form = $this->form_rate();
+				}
+				else {
+					$rate_form = NULL;
+				}
+
+				$avg_rate = $this->av_rate();
+
+				echo <<<POST
+					<article class="post">
+						<header>
+							<h1>{$post["post_title_{$this->lang}"]}</h1>
+							<span class="av_rate">$avg_rate</span>
+						</header>
+						<div class="content">
+							{$post["post_short_desc_{$this->lang}"]}
+							{$post["post_full_desc_{$this->lang}"]}
+						</div>
+						<footer>
+							<time datetime="{$post["post_date"]}" pubdate>{$date[0]}</time>
+							{$rate_form}
+							<span class="author"><a href="profile.php?id={$post["u_id"]}">{$post["u_login"]}</a></span>
+						</footer>
+					</article>
+POST;
 			} 
 			else {
 				throw new Exception("Такої новини немає");

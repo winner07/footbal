@@ -201,6 +201,10 @@ header .lang .ua {
 	display:inline
 }
 
+.post header .av_rate {
+	color:#43853B;
+}
+
 .post header h2 a:hover {
 	color:red;
 }
@@ -232,6 +236,16 @@ header .lang .ua {
 .post footer .author {
 	float:right;
 	font-size:.85em;
+}
+
+/*------ Форма рейтинга ------*/
+.rate_form {
+	display:inline-block;
+	margin-left:10px;
+}
+
+.rate_form select {
+	height:23px;
 }
 
 /*------ Коментарі ------*/
