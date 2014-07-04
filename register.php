@@ -6,6 +6,8 @@ include_once "back-end/config/init.php";
 <head>
 	<meta charset="urf-8">
 	<link href="front-end/css/style.css" rel="stylesheet">
+	<script src="front-end/js/jquery-1.10.2.min.js"></script>
+	<script src="front-end/js/validate.js"></script>
 	<title>Футбол + | Реєстрація</title>
 </head>
 
@@ -22,7 +24,8 @@ include_once "back-end/config/init.php";
 								//Якщо користувач авторизований - вивести повідомлення
 								if (isset($_SESSION["user_login"])) {
 									echo "<p class=\"ok\">You are already member!</p>";
-								} else {
+								} 
+								else {
 									$r_go	= isset($_POST["r_go"]) ? strip_tags(trim($_POST["r_go"])) : NULL;
 									//Масив помилок
 									$errors = array();
@@ -89,26 +92,26 @@ include_once "back-end/config/init.php";
 									//якщо форма не відправлена або є помилки введення
 									if (!isset($r_go) || count($errors)) {
 								?>
-                <form method="post" action="" enctype="multipart/form-data">
+                <form method="post" action="" enctype="multipart/form-data" id="register_form">
                     <table class="reg_table">
                         <tr>
                             <td><strong>Login</strong></td>
-                            <td><input type="text" name="r_login" value="<?php echo $r_login; ?>" required max="30"></td>
+                            <td><input type="text" name="r_login" id="r_login" value="<?php echo $r_login; ?>" required max="30"></td>
                             <td><?php echo isset($errors["er_login"]) ? $errors["er_login"] : NULL; ?></td>
                         </tr>
                         <tr>
                             <td><strong>E-mail</strong></td>
-                            <td><input type="email" name="r_email" value="<?php echo $r_email; ?>" max="100" required></td>
+                            <td><input type="text" name="r_email" id="r_email" value="<?php echo $r_email; ?>" max="100" required></td>
                             <td><?php echo isset($errors["er_email"]) ? $errors["er_email"] : NULL; ?></td>
                         </tr>
                         <tr>
                             <td><strong>Password</strong></td>
-                            <td><input type="password" name="r_pass" value="<?php echo $r_pass; ?>" required></td>
+                            <td><input type="password" name="r_pass" id="r_pass" value="<?php echo $r_pass; ?>" required></td>
                             <td><?php echo isset($errors["er_pass"]) ? $errors["er_pass"] : NULL; ?></td>
                         </tr>
                         <tr>
                             <td><strong>Repeat password</strong></td>
-                            <td colspan="2"><input type="password" name="r_repass" value="<?php echo $r_repass; ?>" required></td>
+                            <td colspan="2"><input type="password" name="r_repass" id="r_repass" value="<?php echo $r_repass; ?>" required></td>
                         </tr>
                         <tr>
                             <td><strong>Avatar (150 * 150) 100 kb</strong></td>
